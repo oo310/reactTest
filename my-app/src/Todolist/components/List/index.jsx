@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import { computeHeadingLevel } from '@testing-library/react';
+import React from 'react';
+//import { computeHeadingLevel } from '@testing-library/react';
 import Item from '../Item';
 import './index.css'
 const List = (props) => {
-    const todos = props.todos
+    const {todos,changetodo,deletetodo} = props
     
     
     return (
         <ul className="todo-main">
           {
             todos.map((todo) => {
-              return <Item key={todo.id} {...todo}/>
+              return <Item key={todo.id} {...todo} changetodo={changetodo} deletetodo={deletetodo}/>
             })
           }
         </ul>
