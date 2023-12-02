@@ -1,17 +1,33 @@
-import React from 'react';
+import React, { useEffect ,useState} from 'react';
 import './index.css';
+import PubSub from 'pubsub-js' 
+function List() {
 
-function List(props) {
-
-    const {user,isFirst,isLoding,err} = props
-    //console.log(user);
+    const [users, setusers] = useState({
+        user:[],
+        isFirst:true,
+        isLoding:false,
+        err:''
+    });
+    useEffect(()=>{
+        const token = PubSub.subscribe('atguigu',(_,stateObj) => {
+            setusers(stateObj);
+            //console.log(stateObj);
+        })
+        return () => {
+            PubSub.unsubscribe(token);
+        };
+        
+    },[])
+    
+    
     return (
         <div className="row">
         {
-            isFirst ? <h2>請輸入關鍵字搜尋</h2>:
-            isLoding ? <h2>搜尋中請稍後</h2>:
-            err ? <h2 style={{color:'red'}}>{err}</h2>:
-            user.map(userObj => {
+            users.isFirst ? <h2>請輸入關鍵字搜尋</h2>:
+            users.isLoding ? <h2>搜尋中請稍後</h2>:
+            users.err ? <h2 style={{color:'red'}}>{users.err}</h2>:
+            users.user.map(userObj => {
                 return(
                    
                     <div key={userObj.id} className="card">
